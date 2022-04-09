@@ -16,7 +16,7 @@ public class RunGenerate {
         final int listSize = 2000;
         AmmunitionGenerator generator = new AmmunitionGenerator();
         generator.ammunitionList(listSize);
-
+        // TODO Zorganizować normalną ścieżkę
         File csvOutputFile = new File("D:\\user_output-.csv");
 
 
