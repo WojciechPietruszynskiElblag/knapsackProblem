@@ -1,12 +1,12 @@
-package solution.model;
+package solution;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Backpack implements Comparable<Backpack> {
-  private int overallValue = 0;
+  private int overallValue=0;
   private int maxBackpackWeight;
-  public List<Ammunition> ammunition = new ArrayList<>();
+  public List<Ammunition> ammunitions = new ArrayList<>();
 
   public Backpack(int maxBackpackWeight) {
     this.maxBackpackWeight = maxBackpackWeight;
@@ -29,11 +29,11 @@ public class Backpack implements Comparable<Backpack> {
   }
 
   public List<Ammunition> getAmmunition() {
-    return ammunition;
+    return ammunitions;
   }
 
   public void setAmmunition(List<Ammunition> ammunitions) {
-    this.ammunition = ammunitions;
+    this.ammunitions = ammunitions;
   }
 
   @Override

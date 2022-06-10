@@ -1,4 +1,4 @@
-package solution.model;
+package solution;
 
 public class Ammunition implements Comparable<Ammunition> {
   private String power;
@@ -13,8 +13,16 @@ public class Ammunition implements Comparable<Ammunition> {
     return power;
   }
 
+  public void setPower(String power) {
+    this.power = power;
+  }
+
   public String getWeight() {
     return weight;
+  }
+
+  public void setWeight(String weight) {
+    this.weight = weight;
   }
 
   @Override
