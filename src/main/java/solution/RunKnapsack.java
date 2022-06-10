@@ -15,10 +15,10 @@ public class RunKnapsack {
   public static void main(String... args) {
 
     List<Backpack> backpackOfBackpacks = new ArrayList<>();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 100; i++) {
       List<Ammunition> ammunitionList = readAmmoFromCSV("ammunition.csv");
       ammunitionList.remove(0);
-      Backpack randomSolution = new Backpack(10000);
+      Backpack randomSolution = new Backpack(55);
       Random randomGenerator = new Random();
       int index;
       Ammunition item;
@@ -41,14 +41,14 @@ public class RunKnapsack {
     Collections.sort(backpackOfBackpacks);
     System.out.println("\u001b[37m" + backpackOfBackpacks.toString());
     // -------------------WITH HMCR---------------------------------------//
-    for (int j = 0; j < 100000; j++) {
+    for (int j = 0; j < 1000; j++) {
       int HMCR = 70;
       Random randomPercents = new Random();
       int result = randomPercents.nextInt(101);
       if (result < HMCR) {
         List<Ammunition> items = readAmmoFromCSV("ammunition.csv");
         items.remove(0);
-        Backpack randomSolution = new Backpack(10000);
+        Backpack randomSolution = new Backpack(55);
         Random randomGenerator = new Random();
         int index;
         Ammunition item;
@@ -69,39 +69,38 @@ public class RunKnapsack {
         System.out.println(randomSolution);
         for (int i = 0; i < 10; i++) {
           if (backpackOfBackpacks.get(i).getOverallValue() < randomSolution.getOverallValue()) {
-            System.out.println("\u001B[31m" + "I will add this");
+            System.out.println("\u001B[31m" + "Dobre rozwiązanie");
             System.out.print("\u001b[37m");
             backpackOfBackpacks.remove(i);
             backpackOfBackpacks.add(randomSolution);
             break;
           }
         }
-        // Collections.sort(backpackOfBackpacks);
         System.out.println(backpackOfBackpacks.toString());
       } else {
         System.out.println("HMCR - " + result);
-        Backpack randomSolutionn = new Backpack(10000);
+        Backpack backpack = new Backpack(45);
         List<Ammunition> items = readAmmoFromCSV("ammunition.csv");
         for (int i = 0; i < 20; i++) {
           Random r = new Random();
           int number = r.nextInt(10);
-          randomSolutionn.setOverallValue(
-              randomSolutionn.getOverallValue()
+          backpack.setOverallValue(
+              backpack.getOverallValue()
                   + Integer.parseInt(
                       backpackOfBackpacks.get(number).ammunitions.get(i).getPower()));
-          randomSolutionn.setMaxBackpackWeight(
-              randomSolutionn.getMaxBackpackWeight()
+          backpack.setMaxBackpackWeight(
+              backpack.getMaxBackpackWeight()
                   - Integer.parseInt(
                       backpackOfBackpacks.get(number).ammunitions.get(i).getWeight()));
         }
 
-        System.out.println(randomSolutionn.getOverallValue());
-        System.out.println(randomSolutionn.getMaxBackpackWeight());
+        System.out.println(backpack.getOverallValue());
+        System.out.println(backpack.getMaxBackpackWeight());
         for (int i = 0; i < 10; i++) {
-          if (backpackOfBackpacks.get(i).getOverallValue() < randomSolutionn.getOverallValue()) {
-            System.out.println("\u001B[31m" + "I will add this");
+          if (backpackOfBackpacks.get(i).getOverallValue() < backpack.getOverallValue()) {
+            System.out.println("\u001B[31m" + "Dobre rozwiązanie");
             backpackOfBackpacks.remove(i);
-            backpackOfBackpacks.add(randomSolutionn);
+            backpackOfBackpacks.add(backpack);
             break;
           }
         }
