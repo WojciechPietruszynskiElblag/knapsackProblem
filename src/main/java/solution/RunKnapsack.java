@@ -15,83 +15,91 @@ public class RunKnapsack {
   public static void main(String... args) {
 
     List<Backpack> backpackOfBackpacks = new ArrayList<>();
-    for(int i = 0; i < 10; i++){
-      List<Ammunition> items = readBooksFromCSV("ammunition.csv");
-      items.remove(0);
+    for (int i = 0; i < 10; i++) {
+      List<Ammunition> ammunitionList = readAmmoFromCSV("ammunition.csv");
+      ammunitionList.remove(0);
       Backpack randomSolution = new Backpack(10000);
       Random randomGenerator = new Random();
       int index;
       Ammunition item;
-      while(!items.isEmpty()){
-        index = randomGenerator.nextInt(items.size());
-        item = items.get(index);
-        if((randomSolution.getMaxBackpackWeight() - Integer.parseInt(item.getWeight())) > 0){
+      while (!ammunitionList.isEmpty()) {
+        index = randomGenerator.nextInt(ammunitionList.size());
+        item = ammunitionList.get(index);
+        if ((randomSolution.getMaxBackpackWeight() - Integer.parseInt(item.getWeight())) > 0) {
           randomSolution.ammunitions.add(item);
-          items.remove(index);
-          randomSolution.setOverallValue(randomSolution.getMaxBackpackWeight() - Integer.parseInt(item.getWeight()));
-          randomSolution.setOverallValue(randomSolution.getOverallValue() + Integer.parseInt(item.getPower()));
-        }else{
-          items.remove(index);
+          ammunitionList.remove(index);
+          randomSolution.setOverallValue(
+              randomSolution.getMaxBackpackWeight() - Integer.parseInt(item.getWeight()));
+          randomSolution.setOverallValue(
+              randomSolution.getOverallValue() + Integer.parseInt(item.getPower()));
+        } else {
+          ammunitionList.remove(index);
         }
       }
       backpackOfBackpacks.add(randomSolution);
     }
     Collections.sort(backpackOfBackpacks);
     System.out.println("\u001b[37m" + backpackOfBackpacks.toString());
-//------------------------------------------------------------------------------//
-    for(int j = 0; j < 100000; j++) {
+    // -------------------WITH HMCR---------------------------------------//
+    for (int j = 0; j < 100000; j++) {
       int HMCR = 70;
       Random randomPercents = new Random();
       int result = randomPercents.nextInt(101);
-      if(result < HMCR){
-        List<Ammunition> items = readBooksFromCSV("ammunition.csv");
+      if (result < HMCR) {
+        List<Ammunition> items = readAmmoFromCSV("ammunition.csv");
         items.remove(0);
         Backpack randomSolution = new Backpack(10000);
         Random randomGenerator = new Random();
         int index;
         Ammunition item;
-        while(!items.isEmpty()){
+        while (!items.isEmpty()) {
           index = randomGenerator.nextInt(items.size());
           item = items.get(index);
-          if((randomSolution.getMaxBackpackWeight() - Integer.parseInt(item.getWeight())) > 0){
+          if ((randomSolution.getMaxBackpackWeight() - Integer.parseInt(item.getWeight())) > 0) {
             randomSolution.ammunitions.add(item);
             items.remove(index);
-            randomSolution.setMaxBackpackWeight(randomSolution.getMaxBackpackWeight() - Integer.parseInt(item.getWeight()));
-            randomSolution.setOverallValue(randomSolution.getOverallValue() + Integer.parseInt(item.getPower()));
-          }else{
+            randomSolution.setMaxBackpackWeight(
+                randomSolution.getMaxBackpackWeight() - Integer.parseInt(item.getWeight()));
+            randomSolution.setOverallValue(
+                randomSolution.getOverallValue() + Integer.parseInt(item.getPower()));
+          } else {
             items.remove(index);
           }
         }
         System.out.println(randomSolution);
         for (int i = 0; i < 10; i++) {
           if (backpackOfBackpacks.get(i).getOverallValue() < randomSolution.getOverallValue()) {
-            System.out.println("\u001B[31m" +"I will add this");
+            System.out.println("\u001B[31m" + "I will add this");
             System.out.print("\u001b[37m");
             backpackOfBackpacks.remove(i);
             backpackOfBackpacks.add(randomSolution);
             break;
           }
         }
-        //Collections.sort(backpackOfBackpacks);
+        // Collections.sort(backpackOfBackpacks);
         System.out.println(backpackOfBackpacks.toString());
-      }
-      else{
+      } else {
         System.out.println("HMCR - " + result);
         Backpack randomSolutionn = new Backpack(10000);
-        List<Ammunition> items = readBooksFromCSV("ammunition.csv");
-        for(int i = 0; i < 20; i++){
+        List<Ammunition> items = readAmmoFromCSV("ammunition.csv");
+        for (int i = 0; i < 20; i++) {
           Random r = new Random();
           int number = r.nextInt(10);
-          randomSolutionn.setOverallValue(randomSolutionn.getOverallValue() + Integer.parseInt(backpackOfBackpacks.get(number).ammunitions.get(i).getPower()));
-          randomSolutionn.setMaxBackpackWeight(randomSolutionn.getMaxBackpackWeight() - Integer.parseInt(backpackOfBackpacks.get(number).ammunitions.get(i).getWeight()));
+          randomSolutionn.setOverallValue(
+              randomSolutionn.getOverallValue()
+                  + Integer.parseInt(
+                      backpackOfBackpacks.get(number).ammunitions.get(i).getPower()));
+          randomSolutionn.setMaxBackpackWeight(
+              randomSolutionn.getMaxBackpackWeight()
+                  - Integer.parseInt(
+                      backpackOfBackpacks.get(number).ammunitions.get(i).getWeight()));
         }
 
         System.out.println(randomSolutionn.getOverallValue());
         System.out.println(randomSolutionn.getMaxBackpackWeight());
         for (int i = 0; i < 10; i++) {
           if (backpackOfBackpacks.get(i).getOverallValue() < randomSolutionn.getOverallValue()) {
-            System.out.println("\u001B[31m" +"I will add this");
-            System.out.print("\u001b[37m");
+            System.out.println("\u001B[31m" + "I will add this");
             backpackOfBackpacks.remove(i);
             backpackOfBackpacks.add(randomSolutionn);
             break;
@@ -101,27 +109,28 @@ public class RunKnapsack {
         System.out.println(backpackOfBackpacks.toString());
       }
     }
-
   }
-  private static List<Ammunition> readBooksFromCSV(String fileName) {
-    List<Ammunition> items = new ArrayList<>();
+
+  private static List<Ammunition> readAmmoFromCSV(String fileName) {
+    List<Ammunition> ammunitionList = new ArrayList<>();
     Path pathToFile = Paths.get(fileName);
     try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) {
       String line = br.readLine();
       while (line != null) {
         String[] attributes = line.split(",");
         Ammunition item = createBook(attributes);
-        items.add(item);
+        ammunitionList.add(item);
         line = br.readLine();
       }
-    }catch (IOException ioe) {
+    } catch (IOException ioe) {
       ioe.printStackTrace();
     }
-    return items;
+    return ammunitionList;
   }
+
   private static Ammunition createBook(String[] metadata) {
     String power = metadata[0];
     String weight = metadata[1];
-    return new Ammunition(power,weight);
+    return new Ammunition(power, weight);
   }
 }
